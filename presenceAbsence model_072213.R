@@ -7,11 +7,13 @@ library(mvtnorm)
 sourceCpp("code.cpp", verbose=TRUE)
 
 inv_logit <- plogis
+observedStages = 2
+
 #########################################################
 # randPA generates a data frame of random presence-absence
 # and a covariate
 #########################################################
-randPA <- function(nSites=10, lambda=1.5, sigma=1, B0 = 0.3, B1 = 7, distMat = NULL, temp=NULL) {
+randPA <- function(nSites=10, lambda=1.5, sigma=1, B1 = 7, distMat = NULL, temp=NULL, fecund=0.9, survJ = 0.6, survA = 0.9, migRate = 0.1, N = 500) {
 # 'nSites' is number of sites
 # 'lambda' dampening coef for prob of occ by distance
 # 'sigma' is the variance of the spatial process
@@ -27,7 +29,24 @@ vcSpace <- sigma*exp(-(lambda*distMat)^2)
 
 if(is.null(temp)==T) {temp=mvrnorm(1, mu = rep(B0,nSites), Sigma = as.matrix(make.positive.definite(vcSpace)))}
 
-PA = rbinom(nSite,1, prob=plogis(B1*temp))
+betaJ = log(survJ/(1-survJ))
+betaA = log(survA/(1-survA))
+
+survJ = temp*B1 + betaJ; # now vectors
+survA = temp*B1 + betaA;
+migRate = rep(migRate, nSites)
+fecund = rep(fecund,nSites)
+
+# fill in the diagonal elements
+bigMat <- bigM(nSites, migRate, fecund, survJ, survA)
+    
+pop = Re(eigen(bigMat)$vectors[,1]);
+pop = pop/sum(pop)
+	
+# calculate site-stage probabilities
+probs = 1 - exp(-N * (pop))
+
+PA = rbinom(nSite,1, prob=probs)
 
 return(list(PA=PA, distMat=distMat, vcSpace=vcSpace, temp = temp))
 }
@@ -55,26 +74,32 @@ estimate = function(par) {
 	return(-NLL)
 }
 
-estimateIMIS = function(par) {
-	fecund <- rep(exp(par[1]),nSite); # fecundity mean
-	survJ <- rep(inv_logit(par[2] + par[6]*temp),nSite); # juv survival mean
-	survA <- rep(inv_logit(par[3] + par[6]*temp),nSite); # adult survival mean
-	migRate <- rep(inv_logit(par[4]),nSite); 
-	N <- exp(par[5]);
+calcPop = function(par) {
+fecund <- rep(exp(par[1]),nSite); # fecundity mean
+survJ <- rep(inv_logit(par[2] + par[6]*temp),nSite); # juv survival mean
+survA <- rep(inv_logit(par[3] + par[6]*temp),nSite); # adult survival mean
+migRate <- rep(inv_logit(par[4]),nSite); 
+N <- exp(par[5]);
 	
-	# fill in the diagonal elements
-	bigMat <- bigM(nSite, migRate, fecund, survJ, survA)
+# fill in the diagonal elements
+bigMat <- bigM(nSite, migRate, fecund, survJ, survA)
     
-    pop = Re(eigen(bigMat)$vectors[,1]);
-    pop = pop/sum(pop)
-	
-	# calculate site-stage probabilities
-	probs = 1 - exp(-N * (pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)]))
+pop = Re(eigen(bigMat)$vectors[,1]);
+pop = pop/sum(pop)
+return(pop)		
+}
 
-    L = exp(sum(dbinom(y, size = 1, prob = probs, log=TRUE)))
+estimateIMIS = function(par) {
+	pop = calcPop(par)
+	# calculate site-stage probabilities
+	probs = ifelse(observedStages == 1, 1 - exp(-N * (pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)])), 1 - exp(-N * pop)) 
+     #probs = 1 - exp(-N * pop)
+     L = exp(sum(dbinom(y, size = 1, prob = probs, log=TRUE)))
 	# combine stage probabilities, return NLL
 	return(L)
 }
+
+
 
 likelihood <- function(theta) {
 	if (is.matrix(theta)) {
@@ -116,35 +141,6 @@ sample.prior <- function(n) {
 	return(theta)
 }
 
-####################################################################
-# Simulation test # 1
-# This simulation was done iterating over different values of spatial
-# correlation and looking at how different degrees of spatial correlation
-# change parameter estimates. 
-####################################################################
-
-nSite = 50
-locs = cbind(runif(nSite),runif(nSite))
-
-Ls = seq(0.1,2,0.05)# spatial correlation parameters
-outputList = list()
-nSite2 = nSite*2
-for(i in 1:length(Ls)) {
-  dat = randPA(nSites = nSite, lambda=Ls[i], sigma=0.1, distMat = as.matrix(dist(locs,upper=T,diag=T)))
-  y = dat$PA
-  temp = dat$temp
-  outputList[[i]] = IMIS(B=500, B.re=500, number_k=100, D=10)
-}
-
-# make plot of the posteriors
-q = matrix(0,length(Ls)[1],3)
-for(i in 1:length(Ls)) {
-	q[i,] = quantile(outputList[[i]]$resample[,6], c(0.025,0.5,0.975))
-}
-plot(Ls,q[,2],type="l",lwd=2,ylim=c(min(q),max(q)))
-lines(Ls,q[,1])
-lines(Ls,q[,3])
-
 
 ####################################################################
 # Simulation test # 2
@@ -168,6 +164,7 @@ for(i in 1:20) {
   o = IMIS(B=500, B.re=500, number_k=100, D=10)
   outputList2[[i]] = o
 }
+
 pdf("Simulation test 2.pdf")
 # make boxplots of parameters
 par(mfrow = c(3,2),mai=c(0.3,0.3,0.2,0.2))
@@ -176,7 +173,7 @@ for(param in 1:6) {
 x = rep(1, 500)
 y = outputList2[[1]]$resample[,param]
 for(i in 2:20) {
-	x = c(x, rep(i,500))
+	x = c(x, rep(i,500))~/Desktop/Simulation test 2.pdf
 	y = c(y, outputList2[[i]]$resample[,param])
 }
 if(param %in%c(1,5)) y = exp(y)
