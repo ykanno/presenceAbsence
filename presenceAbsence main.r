@@ -4,7 +4,7 @@ library(corpcor)
 library(mcmc)
 library(IMIS)
 library(mvtnorm)
- 
+
 # set wd
 setwd("/users/eric.ward/documents/projects/presenceAbsence")
 
@@ -17,11 +17,11 @@ observedStages = 2 # juvenile and adult PA data observed, otherwise = 1
 ####################################################################
 # demonstrate how to simulate data
 ####################################################################
-
-beta1 = 10
-dat = randPA(nSites=50, lambda=1.5, sigma=1, B1=beta1, locs = NULL, distMat = NULL, temp=NULL, fecund=0.9, survJ = 0.1, survA = 0.2, migRate = 0.05, N = 100)
-
-save.image("Survival transformations.pdf")
+nSite=50
+beta1 = 0.8
+dat = randPA(nSites=nSite, lambda=1.5, sigma=1, B1=beta1, locs = NULL, distMat = NULL, temp=NULL, fecund=0.9, survJ = 0.1, survA = 0.2, migRate = 0.05, N = 100)
+temp=dat$temp
+pdf("Survival transformations.pdf")
 # test the presence - absence function
 par(mfrow=c(3,2), mai = c(0.6,0.6,0.1,0.1))
 plot(seq(1,length(dat$temp)),dat$temp, xlab ="Temp", ylab="Uniform(0,1)",type="b",lwd=2)
@@ -40,10 +40,12 @@ dev.off()
 # demonstrate how to find MLEs with optim
 ####################################################################
 nSite = 50
+
 dat = randPA(nSites=50, lambda=1.5, sigma=1, B1=5, locs = NULL, distMat = NULL, temp=NULL, fecund=0.9, survJ = 0.1, survA = 0.2, migRate = 0.05, N = 100)
 y = dat$PA
 temp = dat$temp
 mlEst = optim(runif(6), estimateML)
+backCalculateParameters(mlEst$par)
 
 ####################################################################
 # demonstrate how to find posteriors with ISIS
@@ -53,7 +55,6 @@ dat = randPA(nSites=50, lambda=1.5, sigma=1, B1=5, locs = NULL, distMat = NULL, 
 y = dat$PA
 temp = dat$temp
 o = IMIS(B=500, B.re=500, number_k=100, D=10)
-
 
 ####################################################################
 # Simulation test # 2

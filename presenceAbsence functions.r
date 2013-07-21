@@ -24,10 +24,11 @@ if(is.null(temp)==T) temp = seq(0,1,length.out=nSites) # make temperature a unif
 betaJ = log(survJ/(1-survJ)) # back transform from user-specified intercepts
 betaA = log(survA/(1-survA))
 
-logitJ = 0*temp*B1 + betaJ
+logitJ = temp*B1 + betaJ
 survJ = plogis(logitJ); # turn survJ and survA into site-specific vectors of (survival)
 logitA = temp*B1 + betaA
-survA = plogis(logitA);
+#survA = plogis(logitA);
+survA = temp*B1 + survA
 migRate = rep(migRate, nSites) # migrationRate and fecundity constant, but need to be vectors for the C call
 fecund = rep(fecund,nSites)
 
@@ -49,8 +50,24 @@ estimateML = function(par) {
 pop = calcPop(par) # calculate s.a.d.
 N = exp(par[5]) # this is local variable
 # calculate site-stage probabilities
-probs = ifelse(observedStages == 1, 1 - exp(-N * (pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)])), 1 - exp(-N * pop)) 
+nSite2 = nSite*2
+probs = 1 - exp(-N * (pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)]))
+if(observedStages == 2) probs =1 - exp(-N * pop)
+#probs = ifelse(observedStages == 1, 1 - exp(-N * (pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)])), 1 - exp(-N * pop)) 
 L = -(sum(dbinom(y, size = 1, prob = probs, log=TRUE)))
+# combine stage probabilities, return neg log likelihood
+return(L)
+}
+
+# this function used to evaluate whether we can recover parameters if we observe the s.a.d.
+eigen.test = function(par) {
+pop = calcPop(par) # calculate s.a.d.
+N = exp(par[5]) # this is local variable
+# calculate site-stage probabilities
+nSite2 = nSite*2
+probs = 1 - exp(-N * (pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)]))
+if(observedStages == 2) probs =1 - exp(-N * pop)
+L = sum((probs-ps)^2)
 # combine stage probabilities, return neg log likelihood
 return(L)
 }
@@ -86,7 +103,9 @@ estimateIMIS = function(par) {
 pop = calcPop(par) # calculate s.a.d.
 N = exp(par[5]) # this is local variable
 # calculate site-stage probabilities
-probs = ifelse(observedStages == 1, 1 - exp(-N * (pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)])), 1 - exp(-N * pop)) 
+nSite2 = nSite*2
+probs = 1 - exp(-N * (pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)]))
+if(observedStages == 2) probs =1 - exp(-N * pop)
 L = exp(sum(dbinom(y, size = 1, prob = probs, log=TRUE)))
 # combine stage probabilities, return likelihood in normal space
 return(L)
