@@ -7,6 +7,7 @@ library(mvtnorm)
 
 # set wd
 setwd("/users/eric.ward/documents/projects/presenceAbsence")
+#setwd("/users/James.Thorson/Desktop/Project_Git/presenceAbsence")
 
 # source local functions and C++ code
 source("presenceAbsence functions.r")
