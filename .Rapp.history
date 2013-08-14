@@ -1,0 +1,1367 @@
+X = sample(seq(1,1000),size=20,replace=F)#
+Y = B0 + B1*X + B2*(X^2) + rnorm(length(X),0,0.007) # CV ~ 10%#
+N = length(Y)#
+plot(X,Y)
+B0 = 0.1#
+B1 = 0.00001#
+B2 = - 0.0000001#
+#
+X = sample(seq(1,1000),size=20,replace=F)#
+Y = B0 + B1*X + B2*(X^2) + rnorm(length(X),0,0.007) # CV ~ 10%#
+N = length(Y)#
+plot(X,Y)
+X = sample(seq(1,1000),size=20,replace=F)#
+Y = B0 + B1*X + B2*(X^2) + rnorm(length(X),0,0.001) # CV ~ 10%#
+N = length(Y)#
+plot(X,Y)
+X = sample(seq(1,1000),size=20,replace=F)#
+Y = B0 + B1*X + B2*(X^2) + rnorm(length(X),0,0.003) # CV ~ 10%#
+N = length(Y)#
+plot(X,Y)
+create #
+jags.data <- list("Y","N","X")#
+jags.params <- c("B","tau","predY")#
+#
+output_reg = list()#
+output_lasso = list()
+i=1
+plot(X,Y)#
+lassoReg = jags(jags.data, inits=NULL, parameters.to.save=jags.params, model.file="regression_lasso.txt", n.chains=5, n.iter=70000, n.burnin=50000,n.thin=10)#
+attach.jags(lassoReg)#
+# calculate bias and variance of Bhat#
+output_lasso[[i]] = list("Bhat" = apply(B,2,mean), "Bvar" = apply(B,2,var), "residVar" = median(1/tau), "predYhat" = apply(predY,2,mean), "predYvar" = apply(predY,2,var), "dev" = mean(deviance))#
+#
+olsReg = jags(jags.data, inits=NULL, parameters.to.save=jags.params, model.file="regression.txt", n.chains=5, n.iter=70000, n.burnin=50000,n.thin=10)#
+attach.jags(olsReg)#
+output_reg[[i]] = list("Bhat" = apply(B,2,mean), "Bvar" = apply(B,2,var), "residVar" = median(1/tau), "predYhat" = apply(predY,2,mean), "predYvar" = apply(predY,2,var), "dev" = mean(deviance))
+list("Bhat" = apply(B,2,mean), "Bvar" = apply(B,2,var), "residVar" = median(1/tau), "predYhat" = apply(predY,2,mean), "predYvar" = apply(predY,2,var), "dev" = mean(deviance))
+attach.jags(lassoReg)
+predY
+hist(predY[,1])
+olsReg = jags(jags.data, inits=NULL, parameters.to.save=jags.params, model.file="regression.txt", n.chains=5, n.iter=70000, n.burnin=50000,n.thin=10)#
+attach.jags(olsReg)
+hist(predY[,1])
+olsReg = jags(jags.data, inits=NULL, parameters.to.save=jags.params, model.file="regression.txt", n.chains=5, n.iter=70000, n.burnin=50000,n.thin=10)#
+attach.jags(olsReg)
+predY1 = apply(predY,2,mean)
+lassoReg = jags(jags.data, inits=NULL, parameters.to.save=jags.params, model.file="regression_lasso.txt", n.chains=5, n.iter=70000, n.burnin=50000,n.thin=10)#
+attach.jags(lassoReg)
+plot(predY1,apply(predY,2,mean))
+olsReg = jags(jags.data, inits=NULL, parameters.to.save=jags.params, model.file="regression.txt", n.chains=5, n.iter=70000, n.burnin=50000,n.thin=10)#
+attach.jags(olsReg)
+plot(predY1,apply(predY,2,sd))
+predY1 = apply(predY,2,sd)
+lassoReg = jags(jags.data, inits=NULL, parameters.to.save=jags.params, model.file="regression_lasso.txt", n.chains=5, n.iter=70000, n.burnin=50000,n.thin=10)#
+attach.jags(lassoReg)
+plot(predY1,apply(predY,2,sd))
+Y
+hist(deviance)
+hist(deviance,100)
+X = sample(seq(1,1000),size=100,replace=F)#
+Y = B0 + B1*X + B2*(X^2) + rnorm(length(X),0,0.003) # CV ~ 10%#
+N = length(Y)#
+plot(X,Y)
+lassoReg = jags(jags.data, inits=NULL, parameters.to.save=jags.params, model.file="regression_lasso.txt", n.chains=5, n.iter=70000, n.burnin=50000,n.thin=10)#
+attach.jags(lassoReg)
+hist(deviance)
+hist(deviance,100)
+hist(1/tau)
+olsReg = jags(jags.data, inits=NULL, parameters.to.save=jags.params, model.file="regression.txt", n.chains=5, n.iter=70000, n.burnin=50000,n.thin=10)#
+attach.jags(olsReg)
+hist(deviance)
+hist(deviance,100)
+B0 = 100#
+B1 = 0.01#
+B2 = - 0.000001#
+#
+X = sample(seq(1,1000),size=100,replace=F)#
+Y = B0 + B1*X + B2*(X^2) + rnorm(length(X),0,0.003) # CV ~ 10%#
+N = length(Y)#
+plot(X,Y)
+B0 = 100#
+B1 = 0.01#
+B2 = - 0.0001#
+#
+X = sample(seq(1,1000),size=100,replace=F)#
+Y = B0 + B1*X + B2*(X^2) + rnorm(length(X),0,0.003) # CV ~ 10%#
+N = length(Y)#
+plot(X,Y)
+create #
+jags.data <- list("Y","N","X")#
+jags.params <- c("B","tau","predY")#
+#
+output_reg = list()#
+output_lasso = list()
+lassoReg = jags(jags.data, inits=NULL, parameters.to.save=jags.params, model.file="regression_lasso.txt", n.chains=5, n.iter=70000, n.burnin=50000,n.thin=10)#
+attach.jags(lassoReg)
+hist(deviance)
+model = cat("#
+model {#
+	# lasso regularization#
+	lambda2 ~ dgamma(1,1);#
+	lambda <- sqrt(lambda2);#
+	for(i in 1:3) {#
+	   B[i] ~ ddexp(0,lambda);	#
+	}#
+    tau ~ dgamma(0.001,0.001);# this is residual error		#
+    for(i in 1:N) {#
+    	predY[i] <- B[1] + B[2]*X[i];# + B[3]*pow(X[i],2);#
+    	Y[i] ~ dnorm(0,tau);#
+    }#
+}#
+#
+", file = "regression_lasso.txt")#
+#
+model = cat("#
+model {#
+	# normal priors#
+	for(i in 1:3) {#
+	   B[i] ~ dnorm(0,1);	#
+	}#
+    tau ~ dgamma(0.001,0.001);# this is residual error		#
+    for(i in 1:N) {#
+    	predY[i] <- B[1] + B[2]*X[i];# + B[3]*pow(X[i],2);#
+    	Y[i] ~ dnorm(0,tau);#
+    }#
+}#
+#
+", file = "regression.txt")#
+#
+# simulate data #
+# parameters for quadratic relationship between growth and population size#
+B0 = 100#
+B1 = 0.01#
+B2 = - 0.0001
+X = sample(seq(1,1000),size=100,replace=F)#
+Y = B0 + B1*X + 0*B2*(X^2) + rnorm(length(X),0,0.003) # CV ~ 10%#
+N = length(Y)#
+plot(X,Y)
+rm(list=ls())                                    #
+library(stats)#
+library(R2admb)#
+library(MASS)#
+model = cat("#
+model {#
+	# lasso regularization#
+	lambda2 ~ dgamma(1,1);#
+	lambda <- sqrt(lambda2);#
+	for(i in 1:3) {#
+	   B[i] ~ ddexp(0,lambda);	#
+	}#
+    tau ~ dgamma(0.001,0.001);# this is residual error		#
+    for(i in 1:N) {#
+    	predY[i] <- B[1] + B[2]*X[i];# + B[3]*pow(X[i],2);#
+    	Y[i] ~ dnorm(0,tau);#
+    }#
+}#
+#
+", file = "regression_lasso.txt")#
+#
+model = cat("#
+model {#
+	# normal priors#
+	for(i in 1:3) {#
+	   B[i] ~ dnorm(0,1);	#
+	}#
+    tau ~ dgamma(0.001,0.001);# this is residual error		#
+    for(i in 1:N) {#
+    	predY[i] <- B[1] + B[2]*X[i];# + B[3]*pow(X[i],2);#
+    	Y[i] ~ dnorm(0,tau);#
+    }#
+}#
+#
+", file = "regression.txt")
+simulate data #
+# parameters for quadratic relationship between growth and population size#
+B0 = 100#
+B1 = 0.01#
+B2 = - 0.0001#
+#
+X = sample(seq(1,1000),size=100,replace=F)#
+Y = B0 + B1*X + 0*B2*(X^2) + rnorm(length(X),0,0.003) # CV ~ 10%#
+N = length(Y)#
+plot(X,Y)#
+#
+library(R2jags)#
+#
+# create #
+jags.data <- list("Y","N","X")#
+jags.params <- c("B","tau","predY")#
+#
+output_reg = list()#
+output_lasso = list()#
+#
+for(i in 1:1000) {#
+#
+#plot(X,Y)#
+lassoReg = jags(jags.data, inits=NULL, parameters.to.save=jags.params, model.file="regression_lasso.txt", n.chains=5, n.iter=70000, n.burnin=50000,n.thin=10)#
+attach.jags(lassoReg)#
+# calculate bias and variance of Bhat#
+output_lasso[[i]] = list("Bhat" = apply(B,2,mean), "Bvar" = apply(B,2,var), "residVar" = median(1/tau), "predYhat" = apply(predY,2,mean), "predYvar" = apply(predY,2,var), "dev" = mean(deviance))#
+#
+olsReg = jags(jags.data, inits=NULL, parameters.to.save=jags.params, model.file="regression.txt", n.chains=5, n.iter=70000, n.burnin=50000,n.thin=10)#
+attach.jags(olsReg)#
+output_reg[[i]] = list("Bhat" = apply(B,2,mean), "Bvar" = apply(B,2,var), "residVar" = median(1/tau), "predYhat" = apply(predY,2,mean), "predYvar" = apply(predY,2,var), "dev" = mean(deviance))#
+print(i)#
+}
+load libraries#
+library(Rcpp)#
+library(corpcor)#
+library(mcmc)#
+library(IMIS)#
+library(mvtnorm)#
+library(pso)#
+#
+# set wd#
+setwd("/users/eric.ward/documents/projects/presenceAbsence")#
+#setwd("/users/James.Thorson/Desktop/Project_Git/presenceAbsence")#
+#
+# source local functions and C++ code#
+source("presenceAbsence functions.r")#
+sourceCpp("code.cpp", verbose=TRUE)#
+#
+observedStages = 2 # juvenile and adult PA data observed, otherwise = 1#
+#
+# load in data#
+load("/Users/Eric.Ward/Downloads/ONP_SoleDuc98_amphibs.RData")#
+#
+# get data for amma#
+amma = dat[,c("AMMA","Northing","Easting","elev")]#
+#
+# create distance matrix#
+amma.dist = dist(amma[,c("Northing","Easting")], diag=T, upper=T)#
+#
+# convert AMMA data to 0s and 1s based on juvenile (2)/ adult (1)#
+# format is Site1-stage1, Site1-stage2, Site2-stage1, Site2-stage2#
+nSite=dim(amma)[1]#
+y = rep(0, nSite*2)#
+y[which(amma$AMMA==2)*2-1] = 1 # fill in juveniles#
+y[which(amma$AMMA==1)*2] = 1 # fill in adults#
+#
+temp = log(amma$elev) # the covariate needs to be named 'temp'#
+# Parameters: 1=log-Fecundity; 2=logit-junvenile survival; 3=logit-adult survival intercept; 4=logit-migration rate; 5=log-N; 6=survival slope#
+#
+Fixed = c(log(0.9), qlogis(0.8), qlogis(0.99), qlogis(0.05), NA, NA) #
+mlEst = nlminb(start=runif(2), objective=FixedFn, Fixed=Fixed, control=list(trace=1))     #
+Est = Fixed#
+Est[5:6] = mlEst$par#
+backCalculateParameters(Est)
+o = IMIS(B=500, B.re=500, number_k=100, D=10)
+this function returns a matrix of prior values#
+prior <- function(theta) {#
+	if (is.matrix(theta)) {#
+		return(apply(X=theta, MARGIN=1, FUN=pri))#
+	} else {#
+		return(pri(theta))#
+	}#
+}#
+#
+# function to sample from priors#
+sample.prior <- function(n) {#
+	theta <- matrix(data = c(	#
+		runif(n=n, log(sum(y)), log(1000)),#
+		rnorm(n=n, mean=0, sd=1)	#
+	), nrow=n, byrow=FALSE)#
+	return(theta)#
+}
+this function is used to calculate s.a.d#
+calcPop = function(par) {#
+  transPars = backCalculateParameters(par)#
+  fecund <- transPars$fecund; # fecundity mean#
+  survJ <- transPars$survJ; # juv survival mean#
+  survA <- transPars$survA; # adult survival mean#
+  migRate <- transPars$migRate; #
+  N <- transPars$N;#
+  # fill in the diagonal elements#
+  bigMat <- bigM(nSite, migRate, fecund, survJ, survA)#
+  pop = Re(eigen(bigMat)$vectors[,1]);#
+  pop = pop/sum(pop)#
+  return(pop)		#
+}#
+#
+# this function is called by IMIS to generate posterior#
+estimateIMIS = function(par) {#
+  pop = calcPop(par) # calculate s.a.d.#
+  N = exp(par[5]) # this is local variable#
+  # calculate site-stage probabilities#
+  nSite2 = nSite*2#
+  probs = 1 - exp(-N * (pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)]))#
+  if(observedStages == 2) probs =1 - exp(-N * pop)#
+  L = exp(sum(dbinom(y, size = 1, prob = probs, log=TRUE)))#
+  # combine stage probabilities, return likelihood in normal space#
+  return(L)#
+}#
+#
+# this function is called to calculate likelihood#
+likelihood <- function(theta) {#
+	if (is.matrix(theta)) {#
+		return(apply(X=theta, MARGIN=1, FUN=estimateIMIS))#
+	} else {#
+		return(estimateIMIS(theta))#
+	}#
+}#
+#
+# this function is called to calculate prior density#
+pri <- function(theta) {#
+	priorDF <- prod(c(#
+		dnorm(x=theta[1], mean=0.9, sd=0.00001),#
+		dnorm(x=theta[2], mean=0.8, sd=0.00001),#
+		dnorm(x=theta[3], mean=0.7, sd=0.00001),#
+		dnorm(x=theta[4], mean=0.05, sd=0.00001),#
+		dunif(x=theta[5], log(sum(y)), log(1000)),#
+		dnorm(x=theta[6], mean=0, sd=1)#
+	))#
+	return(priorDF)#
+}#
+#
+# this function returns a matrix of prior values#
+prior <- function(theta) {#
+	if (is.matrix(theta)) {#
+		return(apply(X=theta, MARGIN=1, FUN=pri))#
+	} else {#
+		return(pri(theta))#
+	}#
+}#
+#
+# function to sample from priors#
+sample.prior <- function(n) {#
+	theta <- matrix(data = c(	#
+		rnorm(n=n, mean=0.9, sd=0.00001),#
+		rnorm(n=n, mean=0.8, sd=0.00001),#
+		rnorm(n=n, mean=0.7, sd=0.00001),#
+		rnorm(n=n, mean=0.05, sd=0.00001),#
+		runif(n=n, log(sum(y)), log(1000)),#
+		rnorm(n=n, mean=0, sd=1)	#
+	), nrow=n, byrow=FALSE)#
+	return(theta)#
+}
+2. FIT THE BAYESIAN MODEL HERE USING ISIS#
+o = IMIS(B=500, B.re=500, number_k=100, D=10)
+2. FIT THE BAYESIAN MODEL HERE USING ISIS#
+o = IMIS(B=500, B.re=500, number_k=100, D=10)
+estimateML = function(par) {#
+  pop = calcPop(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), par[1], par[2])) # calculate s.a.d.#
+  N = exp(par[1]) # this is local variable#
+  # calculate site-stage probabilities#
+  nSite2 = nSite*2#
+  if(observedStages == 1) popTrans = pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)]#
+  if(observedStages == 2) popTrans = pop#
+  probs =1 - exp(-N * popTrans)#
+  #probs = ifelse(observedStages == 1, 1 - exp(-N * (pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)])), 1 - exp(-N * pop)) #
+  L = (sum(dbinom(y, size = 1, prob = probs, log=TRUE)))#
+  # combine stage probabilities, return neg log likelihood#
+  return(L)#
+}
+library(MCMCpack)
+metrop(estimateML, initial=c(log(300),0.1))
+metrop(estimateML, initial=c(log(300),0.1), nbatch=100)
+metrop(estimateML, initial=c(log(300),0.1), nbatch=10000)
+m = metrop(estimateML, initial=c(log(300),0.1), nbatch=10000)
+m
+nameS(m)
+names(m)
+m$accept
+m$final
+m$batch
+m$batch[,1]
+plot(m$batch[,1])
+plot(m$batch[,2])
+?metrop
+m = metrop(estimateML, initial=c(log(300),0.1), nbatch=1000, scale=2)
+m
+m$accept
+m = metrop(estimateML, initial=c(log(300),0.1), nbatch=1000, scale=0.5)
+m$accept
+m = metrop(estimateML, initial=c(log(300),0.1), nbatch=1000, scale=3, debug=T)
+m$accept
+m
+m = metrop(estimateML, initial=c(log(300),0.1), nbatch=1000, scale, debug=T)
+help.search("metropolis")
+library(emdbook)
+estimateML = function(par) {#
+  pop = calcPop(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), par[1], par[2])) # calculate s.a.d.#
+  N = exp(par[1]) # this is local variable#
+  # calculate site-stage probabilities#
+  nSite2 = nSite*2#
+  if(observedStages == 1) popTrans = pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)]#
+  if(observedStages == 2) popTrans = pop#
+  probs =1 - exp(-N * popTrans)#
+  #probs = ifelse(observedStages == 1, 1 - exp(-N * (pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)])), 1 - exp(-N * pop)) #
+  L = -(sum(dbinom(y, size = 1, prob = probs, log=TRUE)))#
+  # combine stage probabilities, return neg log likelihood#
+  return(L)#
+}
+m = metropSB(estimateML, initial=c(log(300),0.1), nbatch=10000)
+m = metropSB(estimateML,start=c(log(300),0.1), nmax = 10000)
+m
+names(m)
+?metropSB
+m = metropSB(estimateML,start=c(log(300),0.1), nmax = 10000,retvals=T)
+m
+names(m)
+m$retvals
+names(m$retvals)
+summary(m$retvals)
+?metropSB
+m$p1
+m$retvals[,1]
+plot(m$retvals[,1])
+plot(m$retvals[,2])
+m = metropSB(estimateML,start=c(log(300),0.1), nmax = 1000000,retfreq=10)
+library(Rcpp)#
+library(corpcor)#
+library(mcmc)#
+library(IMIS)#
+library(mvtnorm)#
+library(pso)#
+#
+# set wd#
+setwd("/users/eric.ward/documents/projects/presenceAbsence")#
+#setwd("/users/James.Thorson/Desktop/Project_Git/presenceAbsence")#
+#
+# source local functions and C++ code#
+source("presenceAbsence functions.r")#
+sourceCpp("code.cpp", verbose=TRUE)#
+#
+observedStages = 2 # juvenile and adult PA data observed, otherwise = 1#
+#
+# load in data#
+load("/Users/Eric.Ward/Downloads/ONP_SoleDuc98_amphibs.RData")#
+#
+# get data for amma#
+amma = dat[,c("AMMA","Northing","Easting","elev")]#
+#
+# create distance matrix#
+amma.dist = dist(amma[,c("Northing","Easting")], diag=T, upper=T)
+convert AMMA data to 0s and 1s based on juvenile (2)/ adult (1)#
+# format is Site1-stage1, Site1-stage2, Site2-stage1, Site2-stage2#
+nSite=dim(amma)[1]#
+y = rep(0, nSite*2)#
+y[which(amma$AMMA==2)*2-1] = 1 # fill in juveniles#
+y[which(amma$AMMA==1)*2] = 1 # fill in adults
+temp = log(amma$elev) # the covariate needs to be named 'temp'#
+# Parameters: 1=log-Fecundity; 2=logit-junvenile survival; 3=logit-adult survival intercept; 4=logit-migration rate; 5=log-N; 6=survival slope
+1. FIT THE MAXIMUM LIKELIHOOD MODEL HERE#
+Fixed = c(log(0.9), qlogis(0.8), qlogis(0.99), qlogis(0.05), NA, NA) #
+mlEst = nlminb(start=runif(2), objective=FixedFn, Fixed=Fixed, control=list(trace=1))     #
+Est = Fixed#
+Est[5:6] = mlEst$par#
+backCalculateParameters(Est)
+backCalculateParameters(Est)
+backCalculateParameters(Est)
+1. FIT THE MAXIMUM LIKELIHOOD MODEL HERE#
+Fixed = c(log(0.9), qlogis(0.8), qlogis(0.99), qlogis(0.05), NA, NA) #
+mlEst = nlminb(start=runif(2), objective=FixedFn, Fixed=Fixed, control=list(trace=1))     #
+Est = Fixed#
+Est[5:6] = mlEst$par#
+backCalculateParameters(Est)
+m
+m
+m[,1]
+m$retvals[,1]
+plot(m$retvals[,1])
+hist(m$retvals[,1])
+hist(m$retvals[,2])
+calcLike = function(par) {#
+  pop = calcPop(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), par[1], par[2])) # calculate s.a.d.#
+  N = exp(par[1]) # this is local variable#
+  # calculate site-stage probabilities#
+  nSite2 = nSite*2#
+  if(observedStages == 1) popTrans = pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)]#
+  if(observedStages == 2) popTrans = pop#
+  probs =1 - exp(-N * popTrans)#
+  #probs = ifelse(observedStages == 1, 1 - exp(-N * (pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)])), 1 - exp(-N * pop)) #
+  L = (sum(dbinom(y, size = 1, prob = probs, log=TRUE)))#
+  # combine stage probabilities, return neg log likelihood#
+  return(L)#
+}
+calcLike = function(par) {#
+  pop = calcPop(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), par[1], par[2])) # calculate s.a.d.#
+  N = exp(par[5]) # this is local variable#
+  # calculate site-stage probabilities#
+  nSite2 = nSite*2#
+  if(observedStages == 1) popTrans = pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)]#
+  if(observedStages == 2) popTrans = pop#
+  probs =1 - exp(-N * popTrans)#
+  #probs = ifelse(observedStages == 1, 1 - exp(-N * (pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)])), 1 - exp(-N * pop)) #
+  L = (sum(dbinom(y, size = 1, prob = probs, log=TRUE)))#
+  # combine stage probabilities, return neg log likelihood#
+  return(L)#
+}
+Estimate the Bayesian model here with SIR model#
+nDraws = 500#
+iter = 0#
+cumLike = 0#
+bestLL = 0#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN ~ runif(1, 0, 5)#
+	B.env ~ rnorm(1, 0, 10)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env)))#
+	cumLike = cumLike + like#
+	if(like> best) {#
+		iter = 0#
+		cumLike = 0#
+		savedDraws = savedDraws*0#
+		best = like#
+	}#
+	if(cumLike > thresh) {#
+		while(thresh>cumLike) {#
+		# save this draw#
+		iter = iter+1#
+		savedDraws[iter,] = c(logN,B.env)#
+		cumLike = cumLike - thresh#
+		}#
+	}#
+}
+nDraws = 500#
+iter = 0#
+cumLike = 0#
+bestLL = 0#
+savedDraws = matrix(0,nDraws,2)
+draw from priors on log(N) and B.env#
+	logN ~ runif(1, 0, 5)#
+	B.env ~ rnorm(1, 0, 10)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env)))#
+	cumLike = cumLike + like
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+source local functions and C++ code#
+source("presenceAbsence functions.r")
+calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env)))#
+	cumLike = cumLike + like
+calcLike = function(par) {#
+  pop = calcPop(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), par[5], par[6])) # calculate s.a.d.#
+  N = exp(par[5]) # this is local variable#
+  # calculate site-stage probabilities#
+  nSite2 = nSite*2#
+  if(observedStages == 1) popTrans = pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)]#
+  if(observedStages == 2) popTrans = pop#
+  probs =1 - exp(-N * popTrans)#
+  #probs = ifelse(observedStages == 1, 1 - exp(-N * (pop[seq(1,nSite2,2)]+pop[seq(2,nSite2,2)])), 1 - exp(-N * pop)) #
+  L = (sum(dbinom(y, size = 1, prob = probs, log=TRUE)))#
+  # combine stage probabilities, return neg log likelihood#
+  return(L)#
+}
+like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env)))#
+	cumLike = cumLike + like
+backCalculateParameters(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+logN
+logN = runif(1, 0, 5)#
+	B.env = rnorm(1, 0, 10)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env)))#
+	cumLike = cumLike + like
+like
+Estimate the Bayesian model here with SIR model#
+nDraws = 500#
+iter = 0#
+cumLike = 0#
+bestLL = 0#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, 5)#
+	B.env = rnorm(1, 0, 10)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env)))#
+	cumLike = cumLike + like#
+	if(like> best) {#
+		iter = 0#
+		cumLike = 0#
+		savedDraws = savedDraws*0#
+		best = like#
+	}#
+	if(cumLike > thresh) {#
+		while(thresh>cumLike) {#
+		# save this draw#
+		iter = iter+1#
+		savedDraws[iter,] = c(logN,B.env)#
+		cumLike = cumLike - thresh#
+		}#
+	}#
+}
+Estimate the Bayesian model here with SIR model#
+nDraws = 500#
+iter = 0#
+cumLike = 0#
+bestLL = 0#
+best = 1.0e-100#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, 5)#
+	B.env = rnorm(1, 0, 10)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env)))#
+	cumLike = cumLike + like#
+	if(like> best) {#
+		iter = 0#
+		cumLike = 0#
+		savedDraws = savedDraws*0#
+		best = like#
+	}#
+	if(cumLike > thresh) {#
+		while(thresh>cumLike) {#
+		# save this draw#
+		iter = iter+1#
+		savedDraws[iter,] = c(logN,B.env)#
+		cumLike = cumLike - thresh#
+		}#
+	}#
+}
+Estimate the Bayesian model here with SIR model#
+nDraws = 500#
+iter = 0#
+cumLike = 0#
+bestLL = 0#
+best = 1.0e-100#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, 5)#
+	B.env = rnorm(1, 0, 10)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env)))#
+	cumLike = cumLike + like#
+	if(like> best) {#
+		iter = 0#
+		cumLike = 0#
+		savedDraws = savedDraws*0#
+		best = like#
+	}#
+	if(cumLike > best) {#
+		while(best>cumLike) {#
+		# save this draw#
+		iter = iter+1#
+		savedDraws[iter,] = c(logN,B.env)#
+		cumLike = cumLike - best#
+		}#
+	}#
+}
+logN
+B.env
+like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env)))
+like
+like
+is.na(like)
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, 5)#
+	B.env = rnorm(1, 0, 10)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env)))#
+	if(is.na(like)==F) {#
+	cumLike = cumLike + like#
+	if(like> best) {#
+		iter = 0#
+		cumLike = 0#
+		savedDraws = savedDraws*0#
+		best = like#
+	}#
+	if(cumLike > best) {#
+		while(best>cumLike) {#
+		# save this draw#
+		iter = iter+1#
+		savedDraws[iter,] = c(logN,B.env)#
+		cumLike = cumLike - best#
+		}#
+	}#
+	}#
+}
+iter
+Estimate the Bayesian model here with SIR model#
+nDraws = 500#
+iter = 0#
+cumLike = 0#
+bestLL = 0#
+best = 1.0e-100#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, 5)#
+	B.env = rnorm(1, 0, 10)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env)))#
+	if(is.na(like)==F) {#
+	cumLike = cumLike + like#
+	if(like> best) {#
+		iter = 0#
+		cumLike = 0#
+		savedDraws = savedDraws*0#
+		best = like#
+	}#
+	if(cumLike > best) {#
+		while(best>cumLike) {#
+		# save this draw#
+		iter = iter+1#
+		print(iter)#
+		savedDraws[iter,] = c(logN,B.env)#
+		cumLike = cumLike - best#
+		}#
+	}#
+	}#
+}
+logN = runif(1, 0, 10)#
+	B.env = rnorm(1, 0, 10)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env)))
+like
+logN = runif(1, 0, 10)#
+	B.env = rnorm(1, 0, 10)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env)))
+like
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+y
+dat
+mlEst = nlminb(start=runif(2), objective=FixedFn, Fixed=Fixed, control=list(trace=1))     #
+Est = Fixed
+mlEst
+nDraws = 500#
+iter = 0#
+cumLike = 0#
+bestLL = 0#
+best = 1.0e-100#
+savedDraws = matrix(0,nDraws,2)
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env)
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env))
+qlogis(0.8)
+qlogis(0.8)
+qlogis(0.05)
+log(0.9)
+logN
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(100), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(100), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(100), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(100), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(100), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(100), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(100), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(200), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(200), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(200), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(500), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(500), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(500), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(500), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(500), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(500), B.env)))
+log(500)
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(1000), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(1000), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(600), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))
+exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))
+logN = runif(1, 0, log(600))#
+	B.env = rnorm(1, 0, 10)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))
+like
+nDraws = 500#
+iter = 0#
+cumLike = 0#
+best = 1.0e-100#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = rnorm(1, 0, 10)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))#
+	if(is.na(like)==F) {#
+	cumLike = cumLike + like#
+	if(like> best) {#
+		iter = 0#
+		cumLike = 0#
+		savedDraws = savedDraws*0#
+		best = like#
+	}#
+	if(cumLike > best) {#
+		while(best>cumLike) {#
+		# save this draw#
+		iter = iter+1#
+		print(iter)#
+		savedDraws[iter,] = c(logN,B.env)#
+		cumLike = cumLike - best#
+		}#
+	}#
+	}#
+}
+cumLike
+Estimate the Bayesian model here with SIR model#
+nDraws = 500#
+iter = 0#
+cumLike = 0#
+best = 1.0e-100#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = rnorm(1, 0, 10)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))#
+	if(is.na(like)==F) {#
+	cumLike = cumLike + like#
+	if(like> best) {#
+		iter = 0#
+		cumLike = 0#
+		savedDraws = savedDraws*0#
+		best = like#
+	}#
+	if(cumLike > best) {#
+		while(best>cumLike) {#
+		# save this draw#
+		iter = iter+1#
+		savedDraws[iter,] = c(logN,B.env)#
+		cumLike = cumLike - best#
+		}#
+	}#
+	}#
+	print(iter)#
+}
+nDraws = 500#
+iter = 0#
+cumLike = 0#
+best = 1.0e-100#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = rnorm(1, 0, 10)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))#
+	if(is.na(like)==F) {#
+	cumLike = cumLike + like#
+	if(like> best) {#
+		iter = 0#
+		cumLike = 0#
+		savedDraws = savedDraws*0#
+		best = like#
+	}#
+	if(cumLike > best) {#
+		while(best>cumLike) {#
+		# save this draw#
+		iter = iter+1#
+		savedDraws[iter,] = c(logN,B.env)#
+		cumLike = cumLike - best#
+		}#
+	}#
+	}#
+	print(paste(cumLike,":",best))#
+}
+iter
+best
+nDraws = 500#
+iter = 0#
+cumLike = 0#
+best = 1.8e-32#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = rnorm(1, 0, 10)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))#
+	if(is.na(like)==F) {#
+	  cumLike = cumLike + like#
+	  #if(like> best) {#
+ 	  #	iter = 0#
+	  #	cumLike = 0#
+	  #	savedDraws = savedDraws*0#
+	  #	best = like#
+	  #}#
+	  if(cumLike > best) {#
+		while(best>cumLike) {#
+		# save this draw#
+		iter = iter+1#
+		savedDraws[iter,] = c(logN,B.env)#
+		cumLike = cumLike - best#
+		}#
+	  }#
+	}#
+	print(paste(cumLike,":",best))#
+}
+nDraws = 500#
+iter = 0#
+cumLike = 0#
+best = 1.8e-32#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = rnorm(1, 0, 2)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))#
+	if(is.na(like)==F) {#
+	  cumLike = cumLike + like#
+	  #if(like> best) {#
+ 	  #	iter = 0#
+	  #	cumLike = 0#
+	  #	savedDraws = savedDraws*0#
+	  #	best = like#
+	  #}#
+	  if(cumLike > best) {#
+		while(best>cumLike) {#
+		# save this draw#
+		iter = iter+1#
+		savedDraws[iter,] = c(logN,B.env)#
+		cumLike = cumLike - best#
+		}#
+	  }#
+	}#
+	print(paste(cumLike,":",best))#
+}
+nDraws = 500#
+iter = 0#
+cumLike = 0#
+thresh = 1.8e-32#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = rnorm(1, 0, 2)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))#
+	if(is.na(like)==F) {#
+	  cumLike = cumLike + like#
+	  #if(like> best) {#
+ 	  #	iter = 0#
+	  #	cumLike = 0#
+	  #	savedDraws = savedDraws*0#
+	  #	best = like#
+	  #}#
+	  if(cumLike > thresh) {#
+		#while(thresh>cumLike) {#
+		# save this draw#
+		iter = iter+1#
+		savedDraws[iter,] = c(logN,B.env)#
+		cumLike = cumLike - thresh#
+		#}#
+	  }#
+	}#
+	print(paste(cumLike,":",thresh))#
+}
+iter
+best
+savedDraws
+savedDraws[1:88,1]
+savedDraws[1:88,2]
+hist(savedDraws[1:88,2])
+nDraws = 500#
+iter = 0#
+cumLike = 0#
+thresh = 1.8e-32#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = rnorm(1, 0, 2)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))#
+	if(is.na(like)==F) {#
+	  cumLike = cumLike + like#
+	  if(like> best) {#
+ 	  	iter = 0#
+	  	cumLike = 0#
+	  	savedDraws = savedDraws*0#
+	  	best = like#
+	  }#
+	  if(cumLike > thresh) {#
+		while(cumLike > thresh) {#
+		  # save this draw#
+		  iter = iter+1#
+		  savedDraws[iter,] = c(logN,B.env)#
+		  cumLike = cumLike - thresh#
+		}#
+	  }#
+	}#
+	#print(paste(cumLike,":",thresh))#
+}
+iter
+savedDraws[,1]
+savedDraws[1:380,1]
+hist(savedDraws[1:380,1])
+hist(savedDraws[1:380,2])
+nDraws = 1000#
+iter = 0#
+cumLike = 0#
+thresh = 1.8e-32#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = rnorm(1, 0, 2)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))#
+	if(is.na(like)==F) {#
+	  cumLike = cumLike + like#
+	  if(like> best) {#
+ 	  	iter = 0#
+	  	cumLike = 0#
+	  	savedDraws = savedDraws*0#
+	  	best = like#
+	  }#
+	  if(cumLike > thresh) {#
+		while(cumLike > thresh) {#
+		  # save this draw#
+		  iter = iter+1#
+		  savedDraws[iter,] = c(logN,B.env)#
+		  cumLike = cumLike - thresh#
+		  print(paste("Iterations: ",iter,sep=""))#
+		}#
+	  }#
+	}#
+	#print(paste(cumLike,":",thresh))#
+}
+par(mfrow=c(2,1), mai = c(0.7,0.7,0.2,0.2))#
+hist(savedDraws[,1], 40, xlab = "Log (N)", ylab="Posterior", col="grey")#
+hist(savedDraws[,2], 40, xlab = "B.env", ylab="Posterior", col="grey")
+par(mfrow=c(2,1), mai = c(0.7,0.7,0.2,0.2))#
+hist(savedDraws[,1], 40, xlab = "Log (N)", ylab="Posterior", col="grey",main="")#
+hist(savedDraws[,2], 40, xlab = "B.env", ylab="Posterior", col="grey",main="")
+par(mfrow=c(2,1), mai = c(1,1,0.2,0.2))#
+hist(savedDraws[,1], 40, xlab = "Log (N)", ylab="Posterior", col="grey",main="")#
+hist(savedDraws[,2], 40, xlab = "B.env", ylab="Posterior", col="grey",main="")
+par(mfrow=c(2,1), mai = c(1,1,0.2,0.2))#
+hist(savedDraws[,1], 40, xlab = "Log (N)", ylab="Posterior", col="grey",main="AMMA ONP")#
+hist(savedDraws[,2], 40, xlab = "B.env", ylab="Posterior", col="grey",main="")
+par(mfrow=c(2,1), mai = c(1,1,0.2,0.2))#
+hist(savedDraws[,1], 40, xlab = "Log (N)", ylab="Posterior", col="grey",main="AMMA ONP")#
+hist(savedDraws[,2], 40, xlab = "B.elevation", ylab="Posterior", col="grey",main="")
+temp
+temp = scale(temp)
+nDraws = 1000#
+iter = 0#
+cumLike = 0#
+thresh = 1.0e-100#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = runif(1, -5, 5)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))#
+	if(is.na(like)==F) {#
+	  cumLike = cumLike + like#
+	  if(like> best) { # this if statement makes the algorithm reset if a better value is found#
+ 	  	iter = 0#
+	  	cumLike = 0#
+	  	savedDraws = savedDraws*0#
+	  	best = like#
+	  }#
+	  if(cumLike > thresh) {#
+		while(cumLike > thresh) {#
+		  # save this draw#
+		  iter = iter+1#
+		  savedDraws[iter,] = c(logN,B.env)#
+		  cumLike = cumLike - thresh#
+		  print(paste("Iterations: ",iter,sep=""))#
+		}#
+	  }#
+	}#
+	#print(paste(cumLike,":",thresh))#
+}
+nDraws = 1000#
+iter = 0#
+cumLike = 0#
+thresh = 1.0e-32#
+savedDraws = matrix(0,nDraws,2)
+draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = runif(1, -5, 5)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))
+like
+nDraws = 1000#
+iter = 0#
+cumLike = 0#
+thresh = 1.0e-32#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = runif(1, -5, 5)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))#
+	if(is.na(like)==F) {#
+	  cumLike = cumLike + like#
+	  if(like> best) { # this if statement makes the algorithm reset if a better value is found#
+ 	  	iter = 0#
+	  	cumLike = 0#
+	  	savedDraws = savedDraws*0#
+	  	best = like#
+	  }#
+	  if(cumLike > thresh) {#
+		while(cumLike > thresh) {#
+		  # save this draw#
+		  iter = iter+1#
+		  savedDraws[iter,] = c(logN,B.env)#
+		  cumLike = cumLike - thresh#
+		  print(paste("Iterations: ",iter,sep=""))#
+		}#
+	  }#
+	}#
+	#print(paste(cumLike,":",thresh))#
+}
+iter
+thresh
+cumLike
+like
+nDraws = 1000#
+iter = 0#
+cumLike = 0#
+thresh = 1.0e-30#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = runif(1, -5, 5)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))#
+	if(is.na(like)==F) {#
+	  cumLike = cumLike + like#
+	  if(like> best) { # this if statement makes the algorithm reset if a better value is found#
+ 	  	iter = 0#
+	  	cumLike = 0#
+	  	savedDraws = savedDraws*0#
+	  	best = like#
+	  }#
+	  if(cumLike > thresh) {#
+		while(cumLike > thresh) {#
+		  # save this draw#
+		  iter = iter+1#
+		  savedDraws[iter,] = c(logN,B.env)#
+		  cumLike = cumLike - thresh#
+		  print(paste("Iterations: ",iter,sep=""))#
+		}#
+	  }#
+	}#
+	#print(paste(cumLike,":",thresh))#
+}
+par(mfrow=c(2,1), mai = c(1,1,0.2,0.2))#
+hist(savedDraws[,1], 40, xlab = "Log (N)", ylab="Posterior", col="grey",main="AMMA ONP")#
+hist(savedDraws[,2], 40, xlab = "B.elevation", ylab="Posterior", col="grey",main="")
+y
+temp
+hist(temp)
+Estimate the Bayesian model here with SIR model#
+nDraws = 1000#
+iter = 0#
+cumLike = 0#
+thresh = 1.0e-30#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = runif(1, -5, 5)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))#
+	if(is.na(like)==F) {#
+	  cumLike = cumLike + like#
+	  if(like> best) { # this if statement makes the algorithm reset if a better value is found#
+ 	  	iter = 0#
+	  	cumLike = 0#
+	  	savedDraws = savedDraws*0#
+	  	best = like#
+	  }#
+	  if(cumLike > thresh) {#
+		while(cumLike > thresh) {#
+		  # save this draw#
+		  iter = iter+1#
+		  savedDraws[iter,] = c(logN,B.env)#
+		  cumLike = cumLike - thresh#
+		  print(paste("Iterations: ",iter,sep=""))#
+		}#
+	  }#
+	}#
+	#print(paste(cumLike,":",thresh))#
+}
+savedDraws[,1]
+savedDraws[1:50,1]
+hist(savedDraws[1:50,1])
+temp = log(amma$elev)
+nDraws = 1000#
+iter = 0#
+cumLike = 0#
+thresh = 1.0e-30#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = runif(1, -5, 5)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))#
+	if(is.na(like)==F) {#
+	  cumLike = cumLike + like#
+	  if(like> best) { # this if statement makes the algorithm reset if a better value is found#
+ 	  	iter = 0#
+	  	cumLike = 0#
+	  	savedDraws = savedDraws*0#
+	  	best = like#
+	  }#
+	  if(cumLike > thresh) {#
+		while(cumLike > thresh) {#
+		  # save this draw#
+		  iter = iter+1#
+		  savedDraws[iter,] = c(logN,B.env)#
+		  cumLike = cumLike - thresh#
+		  print(paste("Iterations: ",iter,sep=""))#
+		}#
+	  }#
+	}#
+	#print(paste(cumLike,":",thresh))#
+}
+nDraws = 1000#
+iter = 0#
+cumLike = 0#
+thresh = 1.0e-32#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = runif(1, -5, 5)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), log(10), B.env)))#
+	if(is.na(like)==F) {#
+	  cumLike = cumLike + like#
+	  if(like> best) { # this if statement makes the algorithm reset if a better value is found#
+ 	  	iter = 0#
+	  	cumLike = 0#
+	  	savedDraws = savedDraws*0#
+	  	best = like#
+	  }#
+	  if(cumLike > thresh) {#
+		while(cumLike > thresh) {#
+		  # save this draw#
+		  iter = iter+1#
+		  savedDraws[iter,] = c(logN,B.env)#
+		  cumLike = cumLike - thresh#
+		  print(paste("Iterations: ",iter,sep=""))#
+		}#
+	  }#
+	}#
+	#print(paste(cumLike,":",thresh))#
+}
+temp = scale(temp)
+Estimate the Bayesian model here with SIR model#
+nDraws = 1000#
+iter = 0#
+cumLike = 0#
+thresh = 1.0e-32#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = runif(1, -5, 5)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env)))#
+	if(is.na(like)==F) {#
+	  cumLike = cumLike + like#
+	  if(like> best) { # this if statement makes the algorithm reset if a better value is found#
+ 	  	iter = 0#
+	  	cumLike = 0#
+	  	savedDraws = savedDraws*0#
+	  	best = like#
+	  }#
+	  if(cumLike > thresh) {#
+		while(cumLike > thresh) {#
+		  # save this draw#
+		  iter = iter+1#
+		  savedDraws[iter,] = c(logN,B.env)#
+		  cumLike = cumLike - thresh#
+		  print(paste("Iterations: ",iter,sep=""))#
+		}#
+	  }#
+	}#
+	#print(paste(cumLike,":",thresh))#
+}
+best
+nDraws = 1000#
+iter = 0#
+cumLike = 0#
+thresh = 4.0e-28#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = runif(1, -5, 5)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env)))#
+	if(is.na(like)==F) {#
+	  cumLike = cumLike + like#
+	  if(like> best) { # this if statement makes the algorithm reset if a better value is found#
+ 	  	iter = 0#
+	  	cumLike = 0#
+	  	savedDraws = savedDraws*0#
+	  	best = like#
+	  }#
+	  if(cumLike > thresh) {#
+		while(cumLike > thresh) {#
+		  # save this draw#
+		  iter = iter+1#
+		  savedDraws[iter,] = c(logN,B.env)#
+		  cumLike = cumLike - thresh#
+		  print(paste("Iterations: ",iter,sep=""))#
+		}#
+	  }#
+	}#
+	#print(paste(cumLike,":",thresh))#
+}
+savedDraws[,1]
+savedDraws[1:100,1]
+hist(savedDraws[1:100,1])
+hist(savedDraws[1:100,2])
+nDraws = 1000#
+iter = 0#
+cumLike = 0#
+thresh = 4.0e-28#
+savedDraws = matrix(0,nDraws,2)#
+while(iter < nDraws) {#
+	# draw from priors on log(N) and B.env#
+	logN = runif(1, 0, log(600))#
+	B.env = runif(1, -5, 5)#
+	# calculate likelihood#
+	like = exp(calcLike(c(log(0.9), qlogis(0.8), qlogis(0.8),qlogis(0.05), logN, B.env)))#
+	if(is.na(like)==F) {#
+	  cumLike = cumLike + like#
+	  if(like> best) { # this if statement makes the algorithm reset if a better value is found#
+ 	  	iter = 0#
+	  	cumLike = 0#
+	  	savedDraws = savedDraws*0#
+	  	best = like#
+	  }#
+	  if(cumLike > thresh) {#
+		while(cumLike > thresh) {#
+		  # save this draw#
+		  iter = iter+1#
+		  savedDraws[iter,] = c(logN,B.env)#
+		  cumLike = cumLike - thresh#
+		  print(paste("Iterations: ",iter,sep=""))#
+		}#
+	  }#
+	}#
+	#print(paste(cumLike,":",thresh))#
+}
+par(mfrow=c(2,1), mai = c(1,1,0.2,0.2))#
+hist(savedDraws[,1], 40, xlab = "Log (N)", ylab="Posterior", col="grey",main="AMMA ONP")#
+hist(savedDraws[,2], 40, xlab = "B.elevation", ylab="Posterior", col="grey",main="")
