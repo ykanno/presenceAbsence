@@ -56,23 +56,58 @@ if(FALSE){
   backCalculateParameters(mlEst$par)
 }
 
+# THESE ARE THE SIMULATIONS THAT WERE USED TO CREATE FIG 1
 # Try estimating only the environmental parameter
 # CONCLUSION: CAN WORK, BUT IS POSITIVELY BIASED (AS IS CONSISTENT WITH INFREQUENT-EVENT LOGISTIC REGRESSION)
-Fixed = TruePars
+parbias = matrix(0,300,2)
+for(j in 1:dim(parbias)[1]) {
+# Loop over 100 replicates, calculating bias
+parbias[j,1] = runif(1,0,3)
+  dat = randPA(nSites=nSite, lambda=1.5, sigma=1, B1=parbias[j,1], locs = NULL, distMat = NULL, temp=NULL, fecund=0.9, survJ = qlogis(0.5), survA = qlogis(0.2), migRate = 0.05, N = 100)
+  y = dat$PA                                                                                          # survJ -> Logit-space
+  temp = dat$temp  
+  TruePars = par = c(log(0.9), qlogis(0.5), qlogis(0.2), qlogis(0.05), log(100), parbias[j,1]) 
+  Fixed = TruePars
   Fixed[6] = NA
-( mlEst = optimize(f=FixedFn, Fixed=c(log(0.9), qlogis(0.5), qlogis(0.2), qlogis(0.05), log(100), NA), interval=c(-10,10)) )    
+  mlEst = optimize(f=FixedFn, Fixed=c(log(0.9), qlogis(0.5), qlogis(0.2), qlogis(0.05), log(100), NA), interval=c(-10,10))   
   Est = Fixed
   Est[6] = mlEst$minimum
-backCalculateParameters(Est)
 
+parbias[j,2] = backCalculateParameters(Est)$OrigPar[6]
+
+}
+
+# THESE ARE THE SIMULATIONS THAT WERE USED TO CREATE FIG 2
 # Try estimating the environmental parameter + Abundance
 # CONCLUSION: POSITIVE BIAS IN ENVIRONMENTAL EFFECT TRANSLATES TO NEGATIVE BIAS IN N
-Fixed = TruePars
+
+parbias = matrix(0,100,4)
+for(j in 1:dim(parbias)[1]) {
+  # Loop over 100 replicates, calculating bias
+  parbias[j,1] = runif(1,0,3)
+  parbias[j,3] = sample(seq(50,200,1), size = 1)
+  dat = randPA(nSites=nSite, lambda=1.5, sigma=1, B1=parbias[j,1], locs = NULL, distMat = NULL, temp=NULL, fecund=0.9, survJ = qlogis(0.5), survA = qlogis(0.2), migRate = 0.05, N = 100)
+  y = dat$PA                                                                                          # survJ -> Logit-space
+  temp = dat$temp  
+  TruePars = par = c(log(0.9), qlogis(0.5), qlogis(0.2), qlogis(0.05), log(100), parbias[j,1]) 
+  Fixed = TruePars
   Fixed[5:6] = NA
-( mlEst = nlminb(start=runif(2), objective=FixedFn, Fixed=Fixed, control=list(trace=1)) )    
+  mlEst = nlminb(start=runif(2), objective=FixedFn, Fixed=Fixed, control=list(trace=1))   
   Est = Fixed
   Est[5:6] = mlEst$par
-backCalculateParameters(Est)
+  backCalculateParameters(Est)
+  parbias[j,4] = backCalculateParameters(Est)$OrigPar[5]
+  parbias[j,2] = backCalculateParameters(Est)$OrigPar[6]
+
+}
+
+par(mfrow=c(2,1))
+plot(parbias[1:100,1],parbias[1:100,2],xlab="Slope, simulated data", ylab="Slope, estimated",main="Estimate N and environmental parameter")
+plot(parbias[1:100,3],parbias[1:100,4],xlab="N, simulated data", ylab="N, estimated",main="Estimate N and environmental parameter")
+
+
+
+
 
 ####################################################################
 # demonstrate how to find posteriors with ISIS
